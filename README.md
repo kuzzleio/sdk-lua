@@ -30,3 +30,29 @@ cd sdk-lua
 make
 ```
 
+### Example
+
+```lua
+require('kuzzlesdk');
+
+kuzzle = kuzzlesdk.Kuzzle("localhost");
+
+-- connect
+kuzzle:connect();
+-- get Kuzzle timestamp
+timestamp = kuzzle.server:now();
+print(timestamp);
+
+-- Create an index
+kuzzle.index:create("index");
+-- Create a collection in the index
+kuzzle.collection:create("index", "collection")
+
+-- Create a document in the collection
+res = kuzzle.document:create("index", "collection", "", "{\"name\": \"Joe\"}");
+-- Print the json response
+print(res);
+-- Disconnect from Kuzzle
+kuzzle:disconnect();
+
+```
