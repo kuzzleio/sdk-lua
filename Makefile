@@ -28,7 +28,7 @@ JAVA_HOME ?= /usr/local
 ROOTOUTDIR = $(ROOT_DIR)/build
 SWIG = swig
 
-CXXFLAGS = -g -fPIC -std=c++11 -I.$(PATHSEP)sdk-cpp$(PATHSEP)include -I.$(PATHSEP)sdk-cpp$(PATHSEP)src -I.$(PATHSEP)sdk-cpp$(PATHSEP)sdk-c$(PATHSEP)include$(PATHSEP) -I.$(PATHSEP)sdk-cpp$(PATHSEP)sdk-c$(PATHSEP)build$(PATHSEP) -L.$(PATHSEP)sdk-cpp$(PATHSEP)sdk-c$(PATHSEP)build
+CXXFLAGS = -g3 -fPIC -std=c++11 -I.$(PATHSEP)sdk-cpp$(PATHSEP)include -I.$(PATHSEP)sdk-cpp$(PATHSEP)src -I.$(PATHSEP)sdk-cpp$(PATHSEP)sdk-c$(PATHSEP)include$(PATHSEP) -I.$(PATHSEP)sdk-cpp$(PATHSEP)sdk-c$(PATHSEP)build$(PATHSEP) -L.$(PATHSEP)sdk-cpp$(PATHSEP)sdk-c$(PATHSEP)build
 LDFLAGS = -lkuzzlesdk -lpthread
 
 LUA_INCLUDE_DIR ?= `pkg-config --cflags lua5.3`
@@ -61,11 +61,15 @@ make_lib:
 remove_so:
 	rm -rf .$(PATHSEP)sdk-cpp$(PATHSEP)sdk-c$(PATHSEP)build$(PATHSEP)*.so*
 
+cp_so:
+	cp sdk-cpp/sdk-c/build/libkuzzlesdk.so.* build/
+	cp sdk-cpp/sdk-c/build/libkuzzlesdk.so build/
+
 lua: LANGINCLUDE = $(LUAINCLUDE)
 lua: OUTDIR = $(ROOTOUTDIR)
 lua: CC = $(CPP)
 lua: CFLAGS = -fPIC
-lua: makedir make_c_sdk remove_so swig $(OBJS) make_lib
+lua: remove_so makedir make_c_sdk swig $(OBJS) make_lib cp_so
 
 clean:
 	cd sdk-cpp && $(MAKE) clean
