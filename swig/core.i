@@ -38,7 +38,7 @@
   try {
     $action
   }
-  catch (kuzzleio::BadRequestException e) {
+  catch (kuzzleio::KuzzleException e) {
     lua_pushstring(L, e.what());
     SWIG_fail;
   }
