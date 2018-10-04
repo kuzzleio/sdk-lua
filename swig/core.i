@@ -34,6 +34,17 @@
 %feature("director") EventListener;
 %feature("director") SubscribeListener;
 
+%exception {
+  try {
+    $action
+  }
+  catch (kuzzleio::KuzzleException e) {
+    lua_pushstring(L, e.what());
+    SWIG_fail;
+  }
+}
+
+
 %{
 #include "kuzzle.cpp"
 #include "collection.cpp"
